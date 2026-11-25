@@ -1,8 +1,37 @@
-// Smoke test: proves the built app, the Cloudflare adapter and the Supabase auth flow still work together.
-// Zero dependencies on purpose. Run against a live server: BASE_URL=http://localhost:4321 node scripts/smoke.mjs
+// Run only against an isolated local application and its local Supabase stack.
+import { randomUUID } from "node:crypto";
+import { URL } from "node:url";
 
 const BASE_URL = process.env.BASE_URL ?? "http://localhost:4321";
-const email = `smoke-${Date.now()}@example.com`;
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SERVICE_ROLE_KEY = process.env.SERVICE_ROLE_KEY;
+
+function requireLocal(value, name) {
+  let url;
+  try {
+    url = new URL(value);
+  } catch {
+    throw new Error(`${name} must be a local HTTP URL`);
+  }
+  if (
+    url.protocol !== "http:" ||
+    !["localhost", "127.0.0.1", "[::1]"].includes(url.hostname) ||
+    url.username ||
+    url.password ||
+    url.pathname !== "/" ||
+    url.search ||
+    url.hash
+  ) {
+    throw new Error(`${name} must be a local HTTP origin`);
+  }
+  return url.origin;
+}
+
+requireLocal(BASE_URL, "BASE_URL");
+requireLocal(SUPABASE_URL, "SUPABASE_URL");
+if (!SERVICE_ROLE_KEY) throw new Error("SERVICE_ROLE_KEY is required for local account setup");
+
+const email = `smoke-${randomUUID()}@example.com`;
 const password = "Smoke-Test-Passw0rd!";
 const jar = new Map();
 
@@ -39,15 +68,11 @@ const steps = [
   ["home renders", () => request("/"), { status: 200 }],
   ["dashboard redirects anonymous user", () => request("/dashboard"), { status: 302, location: "/auth/signin" }],
   [
-    "signup creates account",
-    () => request("/api/auth/signup", { method: "POST", form: { email, password } }),
-    { status: 302, location: "/auth/confirm-email" },
-  ],
-  [
     "signin rejects wrong password",
     () => request("/api/auth/signin", { method: "POST", form: { email, password: "wrong" } }),
     { status: 302, location: "/auth/signin?error=" },
   ],
+  ["wrong password does not grant access", () => request("/dashboard"), { status: 302, location: "/auth/signin" }],
   [
     "signin accepts correct password",
     () => request("/api/auth/signin", { method: "POST", form: { email, password } }),
@@ -58,18 +83,43 @@ const steps = [
   ["dashboard redirects after signout", () => request("/dashboard"), { status: 302, location: "/auth/signin" }],
 ];
 
+const adminHeaders = {
+  apikey: SERVICE_ROLE_KEY,
+  Authorization: `Bearer ${SERVICE_ROLE_KEY}`,
+  "Content-Type": "application/json",
+};
+const created = await fetch(`${SUPABASE_URL}/auth/v1/admin/users`, {
+  method: "POST",
+  headers: adminHeaders,
+  body: JSON.stringify({ email, password, email_confirm: true }),
+});
+if (!created.ok) throw new Error(`Local account setup failed (${created.status})`);
+const { id } = await created.json();
+if (typeof id !== "string") throw new Error("Local account setup did not return an ID");
+
 let failed = 0;
-for (const [name, run, expected] of steps) {
-  const actual = await run();
-  const ok =
-    actual.status === expected.status &&
-    (expected.location === undefined || actual.location.startsWith(expected.location));
-  console.log(`${ok ? "PASS" : "FAIL"}  ${name}  -> ${actual.status} ${actual.location}`);
-  if (!ok) {
+try {
+  for (const [name, run, expected] of steps) {
+    const actual = await run();
+    const ok =
+      actual.status === expected.status &&
+      (expected.location === undefined || actual.location.startsWith(expected.location));
+    console.log(`${ok ? "PASS" : "FAIL"}  ${name}  -> ${actual.status} ${actual.location}`);
+    if (!ok) {
+      failed++;
+      console.log(`      expected ${expected.status} ${expected.location ?? ""}`);
+    }
+  }
+} finally {
+  const deleted = await fetch(`${SUPABASE_URL}/auth/v1/admin/users/${encodeURIComponent(id)}`, {
+    method: "DELETE",
+    headers: adminHeaders,
+  });
+  if (!deleted.ok) {
+    console.error(`Local account cleanup failed (${deleted.status})`);
     failed++;
-    console.log(`      expected ${expected.status} ${expected.location ?? ""}`);
   }
 }
 
 console.log(failed ? `\n${failed} step(s) failed` : "\nAll smoke steps passed");
-process.exit(failed ? 1 : 0);
+process.exitCode = failed ? 1 : 0;
