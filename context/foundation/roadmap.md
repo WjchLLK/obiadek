@@ -39,7 +39,7 @@ Gwiazda przewodnia to najmniejszy wynik obejmujący cały fragment doświadczeni
 
 | ID | Change ID | Outcome (użytkownik może…) | Prerequisites | PRD refs | Status |
 | --- | --- | --- | --- | --- | --- |
-| S-01 | shared-family-access | Zalogować się do wspólnego konta i uzyskać dostęp do wspólnych danych. | — | FR-001 | in-progress |
+| S-01 | shared-family-access | Zalogować się do wspólnego konta i uzyskać dostęp do wspólnych danych. | — | FR-001 | done |
 | S-02 | matching-meal-proposals | Podać kryteria i otrzymać pasujące propozycje albo informację o ich braku. | S-01 | US-01, FR-002, FR-003, FR-004 | proposed |
 | S-03 | choose-meal-recipe | Wybrać propozycję i odczytać przepis oraz składniki. | S-02 | US-01, FR-005 | proposed |
 | S-04 | share-shopping-list | Wybrać brakujące składniki, utworzyć listę i skopiować ją lub udostępnić jako tekst. | S-03 | US-01, FR-006, FR-007 | proposed |
@@ -71,7 +71,7 @@ Brak osobnych elementów przygotowawczych: minimalne dane, dostęp i ścieżki w
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Istniejący przykład obsługuje e-mail i rejestrację, więc nie dowodzi zgodności z modelem jednego wspólnego konta.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-02: Pasujące propozycje obiadu
 
@@ -136,3 +136,5 @@ Brak pytań przekrojowych zgłoszonych jako otwarte w PRD.
 ## Milestone History
 
 ## Done
+
+- **S-01: Użytkownik może zalogować się loginem i hasłem do wspólnego konta i uzyskać dostęp do wspólnych danych.** — Archived 2026-11-25 → `context/archive/2026-11-24-shared-family-access/`. Lesson: —.
