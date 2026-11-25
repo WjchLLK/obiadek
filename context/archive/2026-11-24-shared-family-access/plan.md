@@ -61,6 +61,8 @@ Usunąć publiczną rejestrację, zachować istniejący przepływ logowania i ut
 
 **Contract**: `/auth/signup`, `/api/auth/signup` i `/auth/confirm-email` nie oferują rejestracji; bezpośredni publiczny signup Supabase jest wyłączony, w tym `auth.enable_signup` i `auth.email.enable_signup`. Nie zakładać, że zmiana lokalnego pliku aktualizuje produkcję.
 
+**Odstępstwo implementacyjne**: `auth.enable_signup = false` blokuje publiczny signup. `auth.email.enable_signup` pozostaje `true`, ponieważ w używanym lokalnym stosie ustawienie `false` blokuje również logowanie e-mail. Zmiana lokalna nie aktualizuje projektu produkcyjnego.
+
 #### 3. Działający smoke test i CI
 
 **Files**: `scripts/smoke.mjs`, `.github/workflows/ci.yml`, `supabase/config.toml`
@@ -164,6 +166,8 @@ Zachować istniejące konto i sesje; przed wdrożeniem właściciel potwierdza d
 
 > Convention: `- [ ]` pending, `- [x]` done. Append ` — <commit sha>` when a step lands. Do not rename step titles.
 
+Potwierdzenie właściciela z 2026-11-25: wszystkie przypadki ręczne 1.3, 1.4, 2.3 i 2.4 sprawdzono; ich przebieg był zgodny z oczekiwaniami. Szczegółowych wyników ani danych dostępowych nie zapisywano.
+
 ### Phase 1: Dostęp do wspólnego konta
 
 #### Automated
@@ -180,10 +184,10 @@ Zachować istniejące konto i sesje; przed wdrożeniem właściciel potwierdza d
 
 #### Automated
 
-- [ ] 2.1 Rozszerzony izolowany smoke test potwierdza odrzucony signup oraz niezależne sesje dwóch klientów i przechodzi w CI.
-- [x] 2.2 Produkcyjny build przechodzi: `npm run build`.
+- [x] 2.1 Rozszerzony izolowany smoke test potwierdza odrzucony signup oraz niezależne sesje dwóch klientów i przechodzi w CI. — 7153dc6473
+- [x] 2.2 Produkcyjny build przechodzi: `npm run build`. — 7153dc6473
 
 #### Manual
 
-- [x] 2.3 Właściciel potwierdza istnienie właściwego konta oraz wyłączenie publicznego signup w docelowym Supabase bez ujawniania danych dostępowych.
-- [x] 2.4 Dwie przeglądarki lub urządzenia logują się wspólnym kontem; wylogowanie jednego nie wylogowuje drugiego.
+- [x] 2.3 Właściciel potwierdza istnienie właściwego konta oraz wyłączenie publicznego signup w docelowym Supabase bez ujawniania danych dostępowych. — 7153dc6473
+- [x] 2.4 Dwie przeglądarki lub urządzenia logują się wspólnym kontem; wylogowanie jednego nie wylogowuje drugiego. — 7153dc6473
