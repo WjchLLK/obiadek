@@ -4,7 +4,7 @@ Obiadek is a family meal-planning web application; its product requirements are 
 
 ## Hard rules and commands
 
-- Never write to `context/archive/`; archived changes are immutable. Open a new change with `/10x-new` instead.
+- Archived changes in `context/archive/` are immutable. `/10x-archive` may move a completed change into that directory; do not modify it after the move. Open a new change with `/10x-new` instead.
 - Preserve `context/` during scaffolding. For file collisions, retain the existing file and place the starter copy alongside it with the `.scaffold` suffix; merge `.gitignore` by appending unique lines.
 - Keep `SUPABASE_URL` and `SUPABASE_KEY` server-only; configure local `.env` and `.dev.vars` as described in @README.md. Do not expose credentials in client code.
 - See @package.json for development and verification scripts and @README.md for smoke test prerequisites.
@@ -63,6 +63,6 @@ Przejdź od konfiguracji sprint-zero do orkiestracji projektu za pomocą **łań
 - `context/foundation/lessons.md` - powtarzające się reguły i pułapki
 - `docs/reference/contract-surfaces.md` - rejestr kluczowych nazw
 
-Umiejętności nie mogą zapisywać do `context/archive/`. Zarchiwizowane zmiany są niezmienne; jeśli rozstrzygnięta ścieżka docelowa zaczyna się od `context/archive/`, przerwij z komunikatem: "This change is archived. Open a new change with `/10x-new` instead."
+Umiejętności nie mogą zmieniać zarchiwizowanych zmian w `context/archive/`; wyjątkiem jest przeniesienie ukończonej zmiany do archiwum przez `/10x-archive`. Jeśli rozwiązana ścieżka dotyczy już zarchiwizowanej zmiany, przerwij z komunikatem: „Ta zmiana jest zarchiwizowana. Zamiast tego otwórz nową zmianę za pomocą `/10x-new`.”
 
 <!-- END @przeprogramowani/10x-cli -->
