@@ -180,10 +180,10 @@ Zachować istniejące konto i sesje; przed wdrożeniem właściciel potwierdza d
 
 #### Automated
 
-- [ ] 2.1 Rozszerzony izolowany smoke test potwierdza odrzucony signup oraz niezależne sesje dwóch klientów i przechodzi w CI.
-- [x] 2.2 Produkcyjny build przechodzi: `npm run build`.
+- [x] 2.1 Rozszerzony izolowany smoke test potwierdza odrzucony signup oraz niezależne sesje dwóch klientów i przechodzi w CI. — 7153dc6473
+- [x] 2.2 Produkcyjny build przechodzi: `npm run build`. — 7153dc6473
 
 #### Manual
 
-- [x] 2.3 Właściciel potwierdza istnienie właściwego konta oraz wyłączenie publicznego signup w docelowym Supabase bez ujawniania danych dostępowych.
-- [x] 2.4 Dwie przeglądarki lub urządzenia logują się wspólnym kontem; wylogowanie jednego nie wylogowuje drugiego.
+- [x] 2.3 Właściciel potwierdza istnienie właściwego konta oraz wyłączenie publicznego signup w docelowym Supabase bez ujawniania danych dostępowych. — 7153dc6473
+- [x] 2.4 Dwie przeglądarki lub urządzenia logują się wspólnym kontem; wylogowanie jednego nie wylogowuje drugiego. — 7153dc6473

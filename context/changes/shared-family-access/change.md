@@ -1,7 +1,7 @@
 ---
 change_id: shared-family-access
 title: Shared family access
-status: implementing
+status: implemented
 created: 2026-11-24
 updated: 2026-11-25
 archived_at: null
