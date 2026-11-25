@@ -108,6 +108,22 @@ The local Studio UI is available at `http://localhost:54323`.
 
 No database tables or migrations are required — this project uses Supabase Auth's built-in `auth.users` table only.
 
+### Shared family account
+
+The application has no public registration or password-reset flow. In Supabase Authentication → Users, an administrator
+creates or confirms the family's shared email/password account. Confirm that the account works before disabling signup or
+deploying. Disabling signup does not remove or disable existing accounts: review those separately without deleting any
+account automatically.
+
+For local Supabase, `auth.enable_signup = false` blocks signup. Keep `auth.email.enable_signup = true`: in the current
+local stack, disabling it also disables email sign-in. Restart the local stack after changing its configuration. In the
+hosted project's Authentication settings, separately disable public signups and confirm the setting; the local
+`config.toml` does not change the hosted project.
+
+To recover access, an administrator uses Supabase Authentication → Users to update the shared account's password or
+initiate the provider's password recovery procedure. Handle credentials privately; never add them to the repository or
+logs. Future application tables require their own access policies; protecting the dashboard alone does not protect data.
+
 ### Using a cloud Supabase project instead
 
 If you prefer to use a hosted Supabase project, add these variables to your `.env` and `.dev.vars` files:
@@ -164,9 +180,9 @@ npm run dev
 In a separate Bash shell:
 
 ```bash
-eval "$(npx supabase status -o env | grep -E '^(API_URL|SERVICE_ROLE_KEY)=')"
-BASE_URL=http://localhost:4321 SUPABASE_URL="$API_URL" SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" npm run smoke
-unset API_URL SERVICE_ROLE_KEY
+eval "$(npx supabase status -o env | grep -E '^(API_URL|ANON_KEY|SERVICE_ROLE_KEY)=')"
+BASE_URL=http://localhost:4321 SUPABASE_URL="$API_URL" ANON_KEY="$ANON_KEY" SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" npm run smoke
+unset API_URL ANON_KEY SERVICE_ROLE_KEY
 ```
 
 > **Note:** this script exists primarily to guard the development of the starter itself — it is a fast sanity check that dependency upgrades did not break the build, the Cloudflare adapter or the Supabase auth flow. It is **not** a substitute for a real test suite. Once you build your own product on top of this starter, add proper tests (unit, integration, end-to-end) suited to your application.

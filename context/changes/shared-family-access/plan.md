@@ -168,22 +168,22 @@ Zachować istniejące konto i sesje; przed wdrożeniem właściciel potwierdza d
 
 #### Automated
 
-- [x] 1.1 Kontrole jakości przechodzą: `npm run lint` i `npx astro check`.
-- [x] 1.2 Izolowany lokalny smoke test przechodzi po przygotowaniu konta administracyjnie: poprawne i błędne hasło, dostęp anonimowy i po zalogowaniu oraz wylogowanie.
+- [x] 1.1 Kontrole jakości przechodzą: `npm run lint` i `npx astro check`. — 97485ea3c8
+- [x] 1.2 Izolowany lokalny smoke test przechodzi po przygotowaniu konta administracyjnie: poprawne i błędne hasło, dostęp anonimowy i po zalogowaniu oraz wylogowanie. — 97485ea3c8
 
 #### Manual
 
-- [x] 1.3 Na telefonowym widoku formularza można zalogować się wspólnym adresem i hasłem; aplikacja nie pokazuje opcji rejestracji.
-- [x] 1.4 Sprawdzić na stronie głównej brak odnośników i opisów zachęcających do rejestracji.
+- [x] 1.3 Na telefonowym widoku formularza można zalogować się wspólnym adresem i hasłem; aplikacja nie pokazuje opcji rejestracji. — 97485ea3c8
+- [x] 1.4 Sprawdzić na stronie głównej brak odnośników i opisów zachęcających do rejestracji. — 97485ea3c8
 
 ### Phase 2: Weryfikacja i instrukcje operacyjne
 
 #### Automated
 
 - [ ] 2.1 Rozszerzony izolowany smoke test potwierdza odrzucony signup oraz niezależne sesje dwóch klientów i przechodzi w CI.
-- [ ] 2.2 Produkcyjny build przechodzi: `npm run build`.
+- [x] 2.2 Produkcyjny build przechodzi: `npm run build`.
 
 #### Manual
 
-- [ ] 2.3 Właściciel potwierdza istnienie właściwego konta oraz wyłączenie publicznego signup w docelowym Supabase bez ujawniania danych dostępowych.
-- [ ] 2.4 Dwie przeglądarki lub urządzenia logują się wspólnym kontem; wylogowanie jednego nie wylogowuje drugiego.
+- [x] 2.3 Właściciel potwierdza istnienie właściwego konta oraz wyłączenie publicznego signup w docelowym Supabase bez ujawniania danych dostępowych.
+- [x] 2.4 Dwie przeglądarki lub urządzenia logują się wspólnym kontem; wylogowanie jednego nie wylogowuje drugiego.

@@ -48,6 +48,6 @@ jobs:
           npm run preview -- --port 4321 &
           for i in $(seq 1 60); do curl -sf -o /dev/null http://localhost:4321/ && break; sleep 1; done
           source "$RUNNER_TEMP/supabase.env"
-          BASE_URL=http://localhost:4321 SUPABASE_URL="$API_URL" SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" npm run smoke
+          BASE_URL=http://localhost:4321 SUPABASE_URL="$API_URL" ANON_KEY="$ANON_KEY" SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" npm run smoke
       - if: always()
         run: npx supabase stop --no-backup
